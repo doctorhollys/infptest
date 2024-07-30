@@ -427,7 +427,7 @@ function shareResult() {
         navigator.share({
             title: 'INFP 세부 유형 테스트 결과',
             text: text,
-            url: 'https://your-test-url.com'  // 실제 테스트 URL로 변경해주세요
+            url: 'https://doctorhollys.github.io/infptest/'  // 실제 테스트 URL로 변경해주세요
         }).then(() => {
             console.log('공유 성공');
         }).catch((error) => {
