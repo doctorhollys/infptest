@@ -1,0 +1,441 @@
+
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INFP 세부 유형 테스트</title>
+    <style>
+        @font-face {
+            font-family: 'MangoDdobak-B';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2405-3@1.1/MangoDdobak-B.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'GowunBatang-Regular';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunBatang-Regular.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+        body {
+            font-family: 'GowunBatang-Regular', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            min-height: 100vh;
+            padding: 20px 0;
+            box-sizing: border-box;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            padding: 40px 80px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            margin: 0 auto;
+        }
+        h1 {
+            font-family: 'MangoDdobak-B', sans-serif;
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 40px;
+        }
+        p {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+        .btn {
+            background-color: #8a2be2;
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-family: 'GowunBatang-Regular', sans-serif;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin: 10px 0;
+            width: 100%;
+        }
+        .btn:hover {
+            background-color: #9932cc;
+        }
+        #question-container, #result-container {
+            display: none;
+        }
+        #question-number {
+            font-size: 18px;
+            color: #8a2be2;
+            margin-bottom: 40px;
+        }
+        #question-text {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 40px;
+        }
+        #result-type {
+            font-size: 24px;
+            color: #8a2be2;
+            margin-bottom: 30px;
+        }
+        #result-description {
+            font-size: 16px;
+            color: #333;
+            line-height: 1.8;
+            text-align: left;
+            margin-bottom: 40px;
+        }
+        #result-description b {
+            color: #8a2be2;
+            margin-top: 20px;
+            display: block;
+        }
+        #share-message {
+            color: #4caf50;
+            margin-top: 20px;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px 40px;
+                margin: 10px auto;
+                width: 95%;
+            }
+            h1 {
+                font-size: 24px;
+            }
+            .btn {
+                font-size: 14px;
+                padding: 12px 24px;
+            }
+        }
+        @media (max-height: 800px) {
+            .content-wrapper {
+                padding: 10px 0;
+            }
+            .container {
+                padding: 20px 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="content-wrapper">
+        <div class="container">
+            <div id="start-container">
+                <h1>INFP 세부 유형 테스트</h1>
+                <p>INFP의 다양한 면모를 탐색해보세요. 당신의 내면에 숨겨진 특별한 성향을 발견할 수 있을 거예요. 20개의 질문을 통해 당신의 INFP 세부 유형을 알아봅시다!</p>
+                <button class="btn" onclick="startTest()">테스트 시작</button>
+            </div>
+            <div id="question-container">
+                <div id="question-number"></div>
+                <div id="question-text"></div>
+                <button class="btn" onclick="answerQuestion(0)"></button>
+                <button class="btn" onclick="answerQuestion(1)"></button>
+                <button class="btn" onclick="answerQuestion(2)"></button>
+            </div>
+            <div id="result-container">
+                <h1>당신의 INFP 세부 유형은...</h1>
+                <div id="result-type"></div>
+                <div id="result-description"></div>
+                <button class="btn" onclick="restartTest()">다시 해보기</button>
+                <button class="btn" onclick="shareResult()">결과 공유하기</button>
+                <div id="share-message"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+    const questions = [
+        {
+            question: "친구와 카페에서 대화 중, 문득 세상을 변화시킬 수 있는 아이디어가 떠올랐습니다. 이때 당신의 반응은?",
+            answers: [
+                "즉시 메모하고 친구와 열정적으로 토론을 시작한다.",
+                "아이디어를 마음속에 간직하고 대화에 집중한다.",
+                "나중에 혼자 깊이 생각해보며 실현 가능성을 탐구한다."
+            ]
+        },
+        {
+            question: "SNS에 자신의 감정을 표현하는 글을 올리려고 합니다. 어떤 방식으로 작성하시겠습니까?",
+            answers: [
+                "은유와 상징을 활용한 시적인 문장으로 감성을 자극한다.",
+                "있는 그대로의 감정을 솔직하게 털어놓는다.",
+                "감정의 원인과 과정을 분석적으로 서술한다."
+            ]
+        },
+        {
+            question: "스트레스로 지친 마음을 달래기 위해 휴가를 계획 중입니다. 어떤 방식의 휴가를 선호하시나요?",
+            answers: [
+                "한적한 시골 마을에서 현지인들과 교류하며 새로운 삶의 방식을 경험한다.",
+                "美적 감각이 돋보이는 예술의 도시를 방문해 영감을 얻는다.",
+                "깊은 숲속에서 명상을 하며 자아를 성찰하는 시간을 가진다."
+            ]
+        },
+        {
+            question: "오랜 고민 끝에 새로운 취미로 악기 연주를 배우기로 결심했습니다. 어떤 방식으로 접근하시겠습니까?",
+            answers: [
+                "악기의 역사와 이론을 공부한 후, 체계적인 커리큘럼을 세워 연습한다.",
+                "마음에 드는 곡을 골라 독학으로 연주해보며 즐거움을 찾는다.",
+                "음악적 감성을 나눌 수 있는 동호회에 가입해 함께 배운다."
+            ]
+        },
+        {
+            question: "한밤중, 문득 인생의 의미에 대해 고민하게 됐습니다. 이런 생각이 들 때 주로 어떻게 대처하시나요?",
+            answers: [
+                "철학 서적을 찾아 읽으며 다양한 사상가들의 견해를 탐구한다.",
+                "일기장에 자신의 생각과 감정을 솔직하게 써내려간다.",
+                "가까운 친구에게 연락해 깊은 대화를 나눈다."
+            ]
+        },
+        {
+            question: "직장에서 동료와 프로젝트 방향에 대해 의견 차이가 생겼습니다. 이때 당신의 대처 방식은?",
+            answers: [
+                "서로의 의견을 존중하면서 창의적인 절충안을 제시한다.",
+                "갈등을 피해 혼자 대안을 모색한 후 조심스레 제안한다.",
+                "감정적 대립을 피하고 객관적 데이터를 바탕으로 설득한다."
+            ]
+        },
+        {
+            question: "주변 사람들이 당신을 '몽상가'라고 부릅니다. 이런 평가에 대한 당신의 생각은?",
+            answers: [
+                "긍정적으로 받아들이고 상상력을 더욱 키워나간다.",
+                "현실과 이상의 균형을 찾으려 노력한다.",
+                "몽상과 현실의 접점을 찾아 실용적인 아이디어로 발전시킨다."
+            ]
+        },
+        {
+            question: "오랜 친구와의 관계가 소원해지고 있음을 느낍니다. 이를 개선하기 위한 당신의 접근 방식은?",
+            answers: [
+                "마음을 담은 장문의 메시지나 손편지로 솔직한 감정을 전한다.",
+                "특별한 이벤트를 준비해 추억을 함께 만들며 관계를 회복한다.",
+                "일상적인 연락을 꾸준히 이어가며 자연스럽게 가까워지기를 기다린다."
+            ]
+        },
+        {
+            question: "10년 후 자신의 모습을 그려본다면, 어떤 삶을 살고 있을 것 같나요?",
+            answers: [
+                "사회에 긍정적인 변화를 만드는 영향력 있는 작가나 예술가로 활동하고 있다.",
+                "소규모 공동체에서 자급자족하는 삶을 살며 내면의 평화를 추구한다.",
+                "여러 분야를 넘나드는 프리랜서로 자유롭고 창의적인 삶을 산다."
+            ]
+        },
+        {
+            question: "단체 여행 중 뜻밖의 일정 변경으로 혼자만의 시간이 생겼습니다. 이때 당신은 어떻게 시간을 보내시겠어요?",
+            answers: [
+                "즉흥적으로 현지인들과 교류하며 숨겨진 명소를 탐방한다.",
+                "조용한 카페에서 여행 일기를 쓰며 지금까지의 경험을 정리한다.",
+                "혼자만의 사진 산책을 하며 독특한 순간들을 포착한다."
+            ]
+        },
+        {
+            question: "최근 읽은 책이 당신의 세계관을 크게 변화시켰습니다. 이 경험을 어떻게 발전시키고 싶나요?",
+            answers: [
+                "비슷한 주제의 독서 모임을 만들어 다양한 의견을 나눈다.",
+                "새로운 관점을 바탕으로 자신만의 에세이나 단편 소설을 쓴다.",
+                "책의 내용을 실생활에 적용해보고 그 과정과 결과를 기록한다."
+            ]
+        },
+        {
+            question: "우연히 자신의 숨겨진 재능을 발견했습니다. 이를 계발하기 위해 어떤 방식을 선택하시겠어요?",
+            answers: [
+                "전문가의 조언을 구하고 체계적인 학습 계획을 세워 꾸준히 발전시킨다.",
+                "취미 생활로 즐기면서 자연스럽게 실력을 키워나간다.",
+                "비슷한 재능을 가진 사람들과 교류하며 서로 자극이 되어준다."
+            ]
+        },
+        {
+            question: "인생의 전환점에서 중요한 결정을 내려야 합니다. 이때 당신의 의사결정 과정은?",
+            answers: [
+                "내면의 직관을 믿고 마음이 이끄는 대로 선택한다.",
+                "장단점을 꼼꼼히 분석하고 신중하게 결정한다.",
+                "가까운 사람들과 충분히 상의한 후 다양한 의견을 참고해 결정한다."
+            ]
+        },
+        {
+            question: "소셜미디어에서 논란의 여지가 있는 사회적 이슈를 접했습니다. 당신의 반응은?",
+            answers: [
+     "깊이 있는 리서치를 통해 자신만의 견해를 정리해 공유한다.",
+                "양측의 의견을 경청하고 중립적인 입장에서 이해하려 노력한다.",
+                "이슈와 관련된 개인적 경험이나 감정을 에세이 형식으로 표현한다."
+            ]
+        },
+        {
+            question: "자아실현을 위해 현재 직업을 그만두고 새로운 분야에 도전하고 싶습니다. 어떻게 행동하시겠어요?",
+            answers: [
+                "철저한 준비 후 계획적으로 이직을 진행한다.",
+                "직감을 믿고 과감하게 새 출발을 한다.",
+                "현재 직업을 유지하면서 서서히 새 분야를 탐색한다."
+            ]
+        },
+        {
+            question: "가장 친한 친구가 당신과 전혀 다른 가치관을 가지고 있음을 알게 됐습니다. 이 상황에서 당신은?",
+            answers: [
+                "서로의 차이를 인정하고 더 깊은 이해를 위해 대화를 나눈다.",
+                "가치관 차이로 인한 갈등을 피해 적당한 거리를 유지한다.",
+                "친구의 관점을 이해하려 노력하며 자신의 가치관도 재고해본다."
+            ]
+        },
+        {
+            question: "어려운 시기를 겪은 후 자아성찰의 시간을 갖고 있습니다. 이 과정에서 가장 중요하게 생각하는 것은?",
+            answers: [
+                "내면의 감정과 욕구를 솔직하게 마주하고 받아들이는 것",
+                "앞으로의 삶의 방향성과 목표를 재정립하는 것",
+                "고난의 의미를 찾고 그것을 통해 성장하는 방법을 모색하는 것"
+            ]
+        },
+        {
+            question: "인도에서 1년간 살아볼 기회가 생겼습니다. 이 경험을 어떻게 활용하고 싶으신가요?",
+            answers: [
+                "현지 문화와 철학을 깊이 있게 탐구하고 책으로 집필한다.",
+                "다양한 사람들의 삶의 모습을 기록한 다큐멘터리를 제작한다.",
+                "요가나 명상을 배우며 내적 성장에 집중한다."
+            ]
+        },
+        {
+            question: "오랫동안 꿈꿔온 창작물을 완성했습니다. 이를 세상과 공유하는 방식으로 선호하는 것은?",
+            answers: [
+                "소수의 깊이 있는 독자들과 먼저 나누고 피드백을 반영한다.",
+                "온라인 플랫폼을 통해 즉시 많은 사람들과 공유한다.",
+                "작품의 의미를 설명하는 전시회나 발표회를 개최한다."
+            ]
+        },
+        {
+            question: "오랜 시간 추구해온 개인적인 프로젝트가 마무리 단계에 있습니다. 이 성취를 어떻게 축하하고 싶나요?",
+            answers: [
+                "프로젝트의 의미와 과정을 돌아보는 개인적인 성찰의 시간을 가진다.",
+                "가까운 사람들과 소소한 파티를 열어 기쁨을 나눈다.",
+                "이 경험을 바탕으로 다음 목표를 세우고 새로운 도전을 계획한다."
+            ]
+        },
+    ];
+
+    const types = {
+        A: "친사회적 유토피안 (Prosocial Utopian)",
+        B: "자아실현적 표현주의자 (Self-Actualizing Expressionist)",
+        C: "대인관계 촉진자 (Interpersonal Facilitator)"
+    };
+
+    const typeDescriptions = {
+        A: `<b>일상의 단면</b>
+친사회적 유토피안 유형의 INFP는 일상 속에서도 끊임없이 이상적인 사회를 꿈꿉니다. 카페에서 친구와 대화를 나누다가도 문득 사회 문제 해결을 위한 혁신적인 아이디어를 떠올리곤 합니다. 이들은 자주 노트에 새로운 생각들을 적어내려가며, 이를 실현할 방법을 고민합니다. 뉴스를 보며 사회 문제에 깊이 공감하고, 주변 사람들과 이에 대해 열정적으로 토론하는 모습을 볼 수 있습니다.
+
+<b>유형 특성</b>
+이들은 강한 도덕적 신념과 풍부한 상상력을 지니고 있습니다. 현실의 제약에 구애받지 않고 혁신적인 아이디어를 제시하는 능력이 탁월하며, 이타주의와 사회 정의에 대한 열정이 강합니다. 또한 직관적 통찰력과 창의적 문제 해결 능력이 뛰어나, 복잡한 사회 문제에 대해 독특한 해결책을 제시할 수 있습니다. 집단 정체성과 사회적 책임감이 강하여 공동체 발전에 기여하고자 하는 욕구가 큽니다.
+
+<b>난점</b>
+때로는 이상과 현실 사이의 간극으로 인해 인지부조화를 경험할 수 있습니다. 완벽주의적 성향으로 인해 자신의 노력이 충분하지 않다고 느끼거나, 세상이 자신의 이상에 미치지 못한다고 생각해 실망할 수 있습니다. 또한 현실적인 제약을 간과하고 지나치게 이상적인 계획을 세우는 경향이 있어 실행 단계에서 어려움을 겪을 수 있습니다. 사회적 비교로 인한 스트레스와 번아웃의 위험도 있습니다.
+
+<b>강화 방법</b>
+이상을 현실화하기 위해 단계적인 접근 방식을 채택해보세요. 거대한 목표를 작은 실행 가능한 단계로 나누고, 각 단계의 성취를 축하하는 습관을 들이세요. 현실적인 제약을 인정하되, 그것을 창의적으로 극복할 방법을 찾아보세요. 또한 비슷한 가치관을 가진 사람들과 네트워크를 형성하여 지지 기반을 만들고, 협력적 문제 해결을 시도해보세요. 마인드풀니스와 같은 명상 기법을 통해 현재에 집중하는 능력을 키우고, 자기 연민(self-compassion)을 실천하여 자신에 대한 과도한 비판을 줄이세요.
+
+<b>성장 이후의 모습</b>
+성장한 친사회적 유토피안 INFP는 이상과 현실 사이의 균형을 잘 잡아갑니다. 그들의 혁신적인 아이디어는 더 이상 단순한 상상에 그치지 않고, 실제 사회 변화로 이어집니다. 비영리 단체나 사회적 기업을 운영하며 자신의 이상을 구현하거나, 정책 입안자로서 시스템적 변화를 이끌어내기도 합니다. 이들은 현실적 제약을 인정하면서도 끊임없이 더 나은 방향을 모색하며, 다른 이들에게 영감을 주는 변화의 촉매제 역할을 합니다.`,
+
+        B: `<b>일상의 단면</b>
+자아실현적 표현주의자 유형의 INFP는 일상을 예술의 캔버스로 여깁니다. 아침에 일어나 창밖의 풍경을 보며 시를 떠올리고, 출근길의 작은 감동을 스케치북에 담아냅니다. 일상적인 대화에서도 은유와 상징을 자주 사용하며, 자신의 감정과 생각을 예술적으로 표현하는 것에 큰 기쁨을 느낍니다. 카페의 분위기, 지나가는 사람들의 표정, 날씨의 변화 등 모든 것이 이들에게는 영감의 원천입니다.
+
+<b>유형 특성</b>
+이들은 뛰어난 감성 지능과 창의성을 지니고 있습니다. 자신의 내면 세계를 탐구하고 이를 예술적으로 표현하는 능력이 탁월하며, 이를 통해 자아실현을 추구합니다. 강한 개성과 독특한 세계관을 가지고 있으며, 이를 작품에 반영합니다. 또한 높은 공감 능력을 바탕으로 타인의 감정을 섬세하게 포착하고 이를 예술로 승화시키는 재능이 있습니다. 자기표현과 진정성을 중요하게 여기며, 이를 통해 타인과의 깊은 연결을 추구합니다.
+
+<b>난점</b>
+때로는 자신의 이상적인 예술관과 현실 사이의 괴리로 인해 좌절감을 느낄 수 있습니다. 완벽주의적 성향으로 인해 자신의 작품에 대해 과도하게 비판적일 수 있으며, 이로 인해 창작 과정에서 막힘을 경험할 수 있습니다. 또한 자신의 내면 세계에 지나치게 몰입하여 현실과의 연결을 잃을 위험이 있습니다. 사회적 인정에 대한 욕구와 독특성 유지 사이에서 갈등할 수 있으며, 이로 인한 정체성 위기를 경험할 수 있습니다.
+
+<b>강화 방법</b>
+자신의 예술성을 인정하고 존중하되, 완벽주의에서 벗어나 과정 자체를 즐기는 태도를 기르세요. 다양한 예술 형식과 기법을 실험해보며 자신의 표현 영역을 넓혀가세요. 또한 다른 예술가들과의 교류를 통해 새로운 영감을 얻고, 건설적인 피드백을 주고받는 습관을 들이세요. 명상이나 마음챙김 연습을 통해 현재에 집중하는 능력을 키우고, 일상의 소소한 아름다움을 발견하고 감사하는 습관을 기르세요. 자신의 작품을 통해 사회적 메시지를 전달하는 등, 예술의 사회적 역할에 대해서도 고민해보세요. 정기적으로 자연 속에서 시간을 보내며 감각을 일깨우고 창의성을 충전하는 것도 도움이 될 수 있습니다.
+
+<b>성장 이후의 모습</b>
+성장한 자아실현적 표현주의자 INFP는 자신의 예술을 통해 깊은 자아 통찰과 사회적 영향력을 동시에 실현합니다. 그들의 작품은 개인의 내면 세계를 탐구하는 동시에 보편적 인간 경험을 반영하여 많은 이들에게 공감과 위안을 줍니다. 다양한 예술 형식을 자유자재로 넘나들며, 혁신적인 표현 방식으로 예술계에 새로운 바람을 일으킵니다. 또한 예술 교육이나 예술 치료 분야에서 활동하며 다른 이들의 자아실현과 치유를 돕기도 합니다. 이들은 예술의 사회적 역할을 깊이 인식하고, 작품을 통해 사회 변화에 기여하며 풍요로운 문화 발전에 큰 역할을 합니다.`,
+
+        C: `<b>일상의 단면</b>
+대인관계 촉진자 유형의 INFP는 일상 속에서 사람들 간의 조화로운 관계를 만들어가는 데 기쁨을 느낍니다. 직장에서 동료들 간의 갈등을 부드럽게 중재하고, 친구 모임에서는 모든 이의 의견이 존중받을 수 있도록 대화를 이끌어갑니다. 카페에서 우연히 만난 낯선 이의 고민을 진심으로 들어주며, 그 과정에서 깊은 만족감을 얻습니다. 이들의 일상은 타인과의 의미 있는 교류로 가득 차 있습니다.
+
+<b>유형 특성</b> 이들은 뛰어난 공감 능력과 섬세한 감수성을 지니고 있습니다. 다른 사람의 감정과 필요를 직관적으로 파악하고 이해하는 능력이 탁월하며, 이를 바탕으로 효과적인 의사소통과 관계 형성을 돕습니다. 갈등 상황에서 각 당사자의 입장을 고려하여 창의적인 해결책을 제시하는 능력이 뛰어나며, 평화와 화합을 추구합니다. 또한 높은 감정 지능을 바탕으로 타인의 잠재력을 끌어내고 성장을 촉진하는 데 재능이 있습니다. 진정성 있는 관계를 중요하게 여기며, 이를 통해 개인과 공동체의 발전을 도모합니다.
+
+<b>난점</b> 때로는 타인의 감정과 필요에 과도하게 몰입하여 자신의 욕구를 무시하거나 번아웃에 빠질 수 있습니다. 모든 이를 만족시키려는 노력으로 인해 스트레스를 받거나 우유부단한 모습을 보일 수 있습니다. 또한 갈등을 피하려는 성향으로 인해 중요한 문제 제기를 주저하거나 자신의 의견을 충분히 표현하지 못할 수 있습니다. 깊은 관계에 대한 열망으로 인해 관계에 지나치게 의존하거나, 반대로 상처받을 것을 두려워해 친밀한 관계 형성을 주저할 수 있습니다.
+
+<b>강화 방법</b> 자기 돌봄의 중요성을 인식하고 규칙적으로 자신만의 시간을 가지세요. 명확한 경계 설정의 기술을 익히고, 때로는 '아니오'라고 말하는 연습을 하세요. 갈등을 회피하지 않고 건설적으로 다루는 방법을 학습하세요. 자기 주장 훈련을 통해 자신의 의견과 감정을 효과적으로 표현하는 능력을 키우세요. 또한 상담 기술이나 코칭 기법을 배워 타인을 돕는 능력을 전문화하는 것도 좋습니다. 명상이나 저널링을 통해 자기 인식을 높이고, 자신의 감정과 욕구를 더 잘 이해하고 표현하는 연습을 하세요. 다양한 유형의 사람들과 교류하며 관계 형성 능력을 넓혀가는 것도 도움이 될 수 있습니다.
+<b>성장 이후의 모습</b> 성장한 대인관계 촉진자 INFP는 자신과 타인 사이의 건강한 균형을 유지하며, 깊이 있는 관계를 통해 개인과 공동체의 성장을 이끌어냅니다. 이들은 뛰어난 중재 능력을 바탕으로 복잡한 갈등 상황을 해결하는 전문가로 인정받으며, 조직 문화 개선이나 팀 빌딩 분야에서 탁월한 성과를 보입니다. 또한 상담사나 코치로 활동하며 많은 이들의 성장과 치유를 돕습니다. 그들의 존재 자체가 주변 사람들에게 위안과 영감을 주며, 더 나은 인간관계와 사회를 만드는 데 큰 기여를 합니다. 이들은 자신의 고유한 가치를 인정하면서도 타인과의 연결을 통해 지속적으로 성장하며, 깊이 있는 인간 이해를 바탕으로 사회의 정서적 지능을 높이는 역할을 합니다.` };
+
+let currentQuestion = 0;
+let scores = {A: 0, B: 0, C: 0};
+
+function startTest() {
+    document.getElementById('start-container').style.display = 'none';
+    document.getElementById('question-container').style.display = 'block';
+    showQuestion();
+}
+
+function showQuestion() {
+    if (currentQuestion < questions.length) {
+        document.getElementById('question-number').textContent = `질문 ${currentQuestion + 1} / ${questions.length}`;
+        document.getElementById('question-text').textContent = questions[currentQuestion].question;
+        const buttons = document.querySelectorAll('#question-container button');
+        for (let i = 0; i < 3; i++) {
+            buttons[i].textContent = questions[currentQuestion].answers[i];
+        }
+    } else {
+        showResult();
+    }
+}
+
+function answerQuestion(answer) {
+    if (answer === 0) scores.A++;
+    else if (answer === 1) scores.B++;
+    else scores.C++;
+    
+    currentQuestion++;
+    showQuestion();
+}
+
+function showResult() {
+    document.getElementById('question-container').style.display = 'none';
+    document.getElementById('result-container').style.display = 'block';
+    
+    const type = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+    document.getElementById('result-type').textContent = types[type];
+    document.getElementById('result-description').innerHTML = typeDescriptions[type];
+}
+
+function restartTest() {
+    currentQuestion = 0;
+    scores = {A: 0, B: 0, C: 0};
+    document.getElementById('result-container').style.display = 'none';
+    document.getElementById('start-container').style.display = 'block';
+}
+
+function shareResult() {
+    const type = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+    const text = `내 INFP 세부 유형은 ${types[type]}입니다. 당신의 INFP 세부 유형은 무엇인가요? 테스트 해보세요!`;
+    
+    if (navigator.share) {
+        navigator.share({
+            title: 'INFP 세부 유형 테스트 결과',
+            text: text,
+            url: 'https://your-test-url.com'  // 실제 테스트 URL로 변경해주세요
+        }).then(() => {
+            console.log('공유 성공');
+        }).catch((error) => {
+            console.log('공유 실패:', error);
+        });
+    } else {
+        alert('이 브라우저에서는 공유 기능을 지원하지 않습니다. 결과를 복사해서 직접 공유해주세요.');
+    }
+}
+</script>
+</body> </html>
