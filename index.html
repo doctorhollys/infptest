@@ -372,6 +372,7 @@
 <b>강화 방법</b> 자기 돌봄의 중요성을 인식하고 규칙적으로 자신만의 시간을 가지세요. 명확한 경계 설정의 기술을 익히고, 때로는 '아니오'라고 말하는 연습을 하세요. 갈등을 회피하지 않고 건설적으로 다루는 방법을 학습하세요. 자기 주장 훈련을 통해 자신의 의견과 감정을 효과적으로 표현하는 능력을 키우세요. 또한 상담 기술이나 코칭 기법을 배워 타인을 돕는 능력을 전문화하는 것도 좋습니다. 명상이나 저널링을 통해 자기 인식을 높이고, 자신의 감정과 욕구를 더 잘 이해하고 표현하는 연습을 하세요. 다양한 유형의 사람들과 교류하며 관계 형성 능력을 넓혀가는 것도 도움이 될 수 있습니다.
 <b>성장 이후의 모습</b> 성장한 대인관계 촉진자 INFP는 자신과 타인 사이의 건강한 균형을 유지하며, 깊이 있는 관계를 통해 개인과 공동체의 성장을 이끌어냅니다. 이들은 뛰어난 중재 능력을 바탕으로 복잡한 갈등 상황을 해결하는 전문가로 인정받으며, 조직 문화 개선이나 팀 빌딩 분야에서 탁월한 성과를 보입니다. 또한 상담사나 코치로 활동하며 많은 이들의 성장과 치유를 돕습니다. 그들의 존재 자체가 주변 사람들에게 위안과 영감을 주며, 더 나은 인간관계와 사회를 만드는 데 큰 기여를 합니다. 이들은 자신의 고유한 가치를 인정하면서도 타인과의 연결을 통해 지속적으로 성장하며, 깊이 있는 인간 이해를 바탕으로 사회의 정서적 지능을 높이는 역할을 합니다.` };
 
+
 let currentQuestion = 0;
 let scores = {A: 0, B: 0, C: 0};
 
@@ -421,16 +422,13 @@ function restartTest() {
 
 function shareResult() {
     const type = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
-    const currentUrl = window.location.href.split('?')[0];  // 현재 URL에서 쿼리 파라미터 제거
-    const shareUrl = `${currentUrl}?result=${type}`;
+    const shareUrl = `${window.location.href.split('#')[0]}#result=${type}`;
 
-    // 텍스트 영역 생성
     const textArea = document.createElement("textarea");
     textArea.value = shareUrl;
-    textArea.style.position = "fixed";  // 화면 밖으로 위치시킴
+    textArea.style.position = "fixed";
     document.body.appendChild(textArea);
 
-    // 텍스트 선택 및 복사
     textArea.focus();
     textArea.select();
 
@@ -441,23 +439,12 @@ function shareResult() {
         document.getElementById('share-message').textContent = "복사에 실패했습니다. 수동으로 복사해주세요: " + shareUrl;
     }
 
-    // 임시 요소 제거
     document.body.removeChild(textArea);
     document.getElementById('share-message').style.display = 'block';
 
-    // 3초 후 메시지 숨기기
     setTimeout(function() {
         document.getElementById('share-message').style.display = 'none';
     }, 3000);
-}
-
-// 페이지 로드 시 URL 파라미터 확인
-window.onload = function() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const result = urlParams.get('result');
-    if (result && types[result]) {
-        showResultFromUrl(result);
-    }
 }
 
 function showResultFromUrl(type) {
@@ -467,5 +454,14 @@ function showResultFromUrl(type) {
     document.getElementById('result-description').innerHTML = typeDescriptions[type];
 }
 
+window.onload = function() {
+    const hash = window.location.hash;
+    if (hash.startsWith('#result=')) {
+        const result = hash.split('=')[1];
+        if (types[result]) {
+            showResultFromUrl(result);
+        }
+    }
+}
 </script>
 </body> </html>
