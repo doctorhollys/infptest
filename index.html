@@ -421,7 +421,8 @@ function restartTest() {
 
 function shareResult() {
     const type = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
-    const shareUrl = `https://your-test-url.com/result?type=${type}`;
+    const currentUrl = window.location.href.split('?')[0];  // 현재 URL에서 쿼리 파라미터 제거
+    const shareUrl = `${currentUrl}?result=${type}`;
 
     // 텍스트 영역 생성
     const textArea = document.createElement("textarea");
@@ -448,6 +449,22 @@ function shareResult() {
     setTimeout(function() {
         document.getElementById('share-message').style.display = 'none';
     }, 3000);
+}
+
+// 페이지 로드 시 URL 파라미터 확인
+window.onload = function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const result = urlParams.get('result');
+    if (result && types[result]) {
+        showResultFromUrl(result);
+    }
+}
+
+function showResultFromUrl(type) {
+    document.getElementById('start-container').style.display = 'none';
+    document.getElementById('result-container').style.display = 'block';
+    document.getElementById('result-type').textContent = types[type];
+    document.getElementById('result-description').innerHTML = typeDescriptions[type];
 }
 
 </script>
